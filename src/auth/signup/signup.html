@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký - Kho hàng vô tri</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='src/css/common.css') }}">
+  <link rel="stylesheet" href="../signup/signup.css">
+</head>
+<body>
+  <div class="split-container">
+    <div class="split-left">
+      <div class="banner-content">
+        <i class="fas fa-warehouse banner-icon"></i>
+        <h1>Kho Hàng Vô Tri</h1>
+        <p>Tham gia cùng chúng tôi để quản lý kho hàng hiệu quả hơn</p>
+      </div>
+    </div>
+
+    <div class="split-right">
+      <div class="signup-form">
+        <div class="form-header">
+          <h2>Đăng ký tài khoản</h2>
+          <p>Điền thông tin của bạn để tạo tài khoản mới</p>
+        </div>
+
+        <form id="signupForm">
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input type="text" id="username" placeholder="Tên đăng nhập">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" placeholder="Email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" placeholder="Mật khẩu">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            Đăng ký <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="divider">hoặc</div>
+
+        <button type="button" id="googleSignUpBtn" class="google-btn" onclick="window.location.href='/process'">
+          <img src="https://www.google.com/favicon.ico" alt="Google">
+          <span>Đăng ký với Google</span>
+        </button>
+
+        <div class="login-link">
+          <p>Đã có tài khoản? <a href="{{ url_for('login_page')}}">Đăng nhập</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.configPath = "{{ url_for('static', filename='src/config/config.js') }}";
+  </script>
+  <script src="{{ url_for('static', filename='src/auth/signup/signup.js') }}" type="module"></script>
+</body>
+</html>

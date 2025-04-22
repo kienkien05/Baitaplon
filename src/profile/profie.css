@@ -1,0 +1,29 @@
+/* profile.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; 
+    color: #333;
+}
+
+.profile-container {
+    background-color: #fff; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile picture */
+.profile-picture img {
+    border-radius: 50%; 
+    width: 100px; 
+    height: 100px; 
+}
+
+.additional-info p {
+    margin: 10px 0; 
+}
+
+.account-actions button {
+    margin-right: 10px; 
+}
