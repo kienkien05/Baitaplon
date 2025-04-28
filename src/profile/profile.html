@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/profile/profile.css">
+</head>
+<body>
+    <header role="banner">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho hàng vô tri</h1>
+            </div>
+            <nav id="mainNav" role="navigation" aria-label="Menu chính">
+                <ul>
+                    {% if session.get('is_admin') %}
+                    <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+                    {% endif %}
+                    <li><a href="/notifications"><i class="fas fa-bell"></i> Thông báo</a></li>
+                    <li><a href="{{ url_for('profile_page') }}" class="active"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-container">
+            <h1>Thông tin cá nhân</h1>
+            <div class="profile-picture">
+                <img src="/assets/default-avatar.png" alt="Profile Picture" id="profilePicture">
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+                <button type="button" id="changeAvatarBtn" class="btn btn-secondary">Đổi ảnh</button>
+            </div>
+            <form id="profileForm">
+                <div class="personal-info">
+                    <p>
+                        <strong>Tên đăng nhập:</strong>
+                        <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+                    </p>
+                    <p>
+                        <strong>Email:</strong>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+                    </p>
+                    <p>
+                        <strong>Số điện thoại:</strong>
+                        <input type="text" id="phone" name="phone">
+                    </p>
+                </div>
+                <div class="additional-info">
+                    <p>
+                        <strong>Tổng số đơn hàng:</strong>
+                        <span id="totalOrders">0</span>
+                    </p>
+                    <p>
+                        <strong>Sản phẩm yêu thích:</strong>
+                        <span id="favoriteProducts">None</span>
+                    </p>
+                    <p>
+                        <strong>Số đánh giá:</strong>
+                        <span id="reviewCount">0</span>
+                    </p>
+                </div>
+                <div class="account-actions">
+                    <a href="/auth/logout" class="btn btn-danger">Đăng xuất</a>
+                    <button type="submit" id="saveProfileBtn" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Kho hàng vô tri. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="/about">Về chúng tôi</a>
+                <a href="/support">Hỗ trợ kỹ thuật</a>
+                <a href="/terms">Điều khoản sử dụng</a>
+                <a href="/privacy">Chính sách bảo mật</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script type="module" src="/profile/profile.js"></script>
+    <script>
+    document.getElementById('changeAvatarBtn').onclick = function() {
+        document.getElementById('avatarInput').click();
+    };
+
+    document.getElementById('avatarInput').onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('profilePicture').src = evt.target.result;  
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    </script>
+</body>
+</html>

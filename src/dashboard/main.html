@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kho hàng vô tri">
+  <meta name="theme-color" content="#ffffff">
+  <title>Kho hàng vô tri</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../dashboard/main.css">
+  
+  <script>
+    window.configPath = "/config/config.js";
+  </script>
+  <script type="module">
+    const { CONFIG } = await import(window.configPath);
+    window.CONFIG = CONFIG;
+  </script>
+</head>
+<body>
+  <header role="banner">
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-warehouse"></i>
+        <h1>Kho hàng vô tri</h1>
+      </div>
+      <nav id="mainNav" role="navigation" aria-label="Menu chính">
+        <ul>
+          {% if session.get('is_admin') %}
+            <li><a href="/dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+          {% endif %}
+          <li><a href="/notifications"><i class="fas fa-bell"></i> Thông báo</a></li>
+          <li><a href="{{ url_for('profile_page') }}"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
+          <li><a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+        <section id="product-inventory" class="card">
+          <div class="section-header">
+            <h2><i class="fas fa-box"></i> Kho sản phẩm</h2>
+            <button id="btnAddProduct" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm sản phẩm</button>
+          </div>
+          <div class="table-responsive">
+            <table id="productTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Giá</th>
+                  <th>Số lượng</th>
+                  <th>Nguồn nhập</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <div id="productModal" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close" id="closeProductModal">&times;</span>
+            <h3 id="modalTitle">Thêm sản phẩm</h3>
+            <form id="productForm">
+              <input type="hidden" id="productId" />
+              <div>
+                <label for="productName">Tên sản phẩm</label>
+                <input type="text" id="productName" required />
+              </div>
+              <div>
+                <label for="productPrice">Giá</label>
+                <input type="number" id="productPrice" required />
+              </div>
+              <div>
+                <label for="productAmount">Số lượng</label>
+                <input type="number" id="productAmount" required />
+              </div>
+              <div>
+                <label for="productSource">Nguồn nhập</label>
+                <input type="text" id="productSource" />
+              </div>
+              <button type="submit" class="btn btn-success">Lưu</button>
+            </form>
+          </div>
+        </div>
+          <p class="dashboard-card-change">4 <span>đơn đang giao</span></p>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <i class="fas fa-heart"></i>
+            <h3>Yêu thích</h3>
+          </div>
+          <p class="dashboard-card-value">8</p>
+          <p class="dashboard-card-change">Sản phẩm</p>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <i class="fas fa-tag"></i>
+            <h3>Ưu đãi</h3>
+          </div>
+          <p class="dashboard-card-value">3</p>
+          <p class="dashboard-card-change">Đang khả dụng</p>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <i class="fas fa-star"></i>
+            <h3>Đánh giá</h3>
+          </div>
+          <p class="dashboard-card-value">15</p>
+          <p class="dashboard-card-change">Đã thực hiện</p>
+        </div>
+      </div>
+      <div class="recent-activity">
+        <h3>Hoạt động gần đây</h3>
+        <ul class="activity-list">
+          <li>
+            <span class="activity-time">Hôm nay</span>
+            <span class="activity-action">Đơn hàng #1234 đang được giao</span>
+          </li>
+          <li>
+            <span class="activity-time">Hôm qua</span>
+            <span class="activity-action">Đã đánh giá sản phẩm ABC</span>
+          </li>
+          <li>
+            <span class="activity-time">20/03</span>
+            <span class="activity-action">Đơn hàng #1233 đã giao thành công</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Kho hàng vô tri. All rights reserved.</p>
+      <nav class="footer-nav">
+        <a href="/about">Về chúng tôi</a>
+        <a href="/support">Hỗ trợ kỹ thuật</a>
+        <a href="/terms">Điều khoản sử dụng</a>
+        <a href="/privacy">Chính sách bảo mật</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+  <div class="modal-container" id="aboutModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Về chúng tôi</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p>Kho hàng vô tri là hệ thống quản lý kho hàng thông minh...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-container" id="supportModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Hỗ trợ kỹ thuật</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-content">
+        <p>Liên hệ hỗ trợ:</p>
+        <ul>
+          <li>Email: ktruongtrung5@gmail.com</li>
+          <li>Hotline: 0395697068</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-container" id="termsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Điều khoản sử dụng</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-content">
+        <h3>1. Điều khoản chung</h3>
+        <p>Nội dung điều khoản sử dụng...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-container" id="privacyModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Chính sách bảo mật</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-content">
+        <h3>1. Quy định bảo mật</h3>
+        <p>Nội dung chính sách bảo mật...</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/core/script.js"></script>
+  <script type="module" src="/dashboard/dashboard.js"></script>
+  <script type="module" src="/core/inventory.js"></script>
+  <script type="module" src="/core/reports.js"></script>
+  <script type="module" src="/profile/profile.js"></script>
+  <script type="module" src="/core/modal.js"></script>
+  <script>
+    console.log('CSS files loaded successfully');
+    console.log('JS files loaded successfully');
+  </script>
+</body>
+</html>
