@@ -3,7 +3,7 @@
 ## Cấu trúc thư mục
 
 ```
-.
+main
 ├── core/
 │   └── python/
 │       ├── app.py
