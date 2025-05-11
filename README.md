@@ -80,11 +80,7 @@ main
     ```bash
     pip install -r requirements.txt
     ```
-3.  **Thiết lập cơ sở dữ liệu:** Chạy script để tạo và thiết lập cơ sở dữ liệu ban đầu.
-    ```bash
-    python core/python/reset_db.py
-    ```
-4.  **Chạy ứng dụng:**
+3.  **Chạy ứng dụng:**
     ```bash
     python core/python/app.py
     ```
