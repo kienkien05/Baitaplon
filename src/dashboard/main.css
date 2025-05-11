@@ -1,0 +1,122 @@
+.dashboard-container {
+    padding: 20px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 20px;
+}
+
+.stat-card {
+    background: var(--background-color);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    background: rgba(0, 123, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.stat-title {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+}
+
+.stat-change {
+    font-size: 0.9rem;
+    color: #28a745;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-change.negative {
+    color: #dc3545;
+}
+
+.recent-activity {
+    margin-top: 2rem;
+}
+
+.activity-list {
+    margin-top: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    background: rgba(0, 123, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.activity-time {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .stat-card {
+        background: #2a2e33;
+    }
+
+    .stat-icon {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .activity-icon {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
