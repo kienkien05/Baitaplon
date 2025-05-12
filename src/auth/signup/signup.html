@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký - Kho hàng vô tri</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/auth/signup/signup.css">
+  <link rel="stylesheet" href="/css/temporary-notification.css">
+</head>
+<body>
+  <div class="split-container">
+    <div class="split-left">
+      <div class="banner-content">
+        <i class="fas fa-warehouse banner-icon"></i>
+        <h1>Kho Hàng Vô Tri</h1>
+        <p>Tham gia cùng chúng tôi để quản lý kho hàng hiệu quả hơn</p>
+      </div>
+    </div>
+
+    <div class="split-right">
+      <div class="signup-form">
+        <div class="form-header">
+          <h2>Đăng ký tài khoản</h2>
+          <p>Điền thông tin của bạn để tạo tài khoản mới</p>
+          
+          <div id="errorMessage" class="error-message" style="display: none; color: #e74c3c; background-color: #fadbd8; padding: 10px; border-radius: 5px; margin-top: 10px; text-align: center;"></div>
+        </div>
+
+        <form id="signupForm" method="POST">
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input type="text" id="username" name="username" placeholder="Tên đăng nhập" required>
+            </div>
+            <span id="username-error" class="error-message" style="color: red; font-size: 0.95em; display: block; margin-top: 2px;"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            <span id="email-error" class="error-message" style="color: red; font-size: 0.95em; display: block; margin-top: 2px;"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+            </div>
+            <span id="password-error" class="error-message" style="color: red; font-size: 0.95em; display: block; margin-top: 2px;"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+            </div>
+            <span id="confirm-password-error" class="error-message" style="color: red; font-size: 0.95em; display: block; margin-top: 2px;"></span>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            Đăng ký <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="divider">hoặc</div>
+
+        <button type="button" id="googleSignUpBtn" class="google-btn" onclick="window.location.href='/process'">
+          <img src="https://www.google.com/favicon.ico" alt="Google">
+          <span>Đăng ký với Google</span>
+        </button>
+
+        <div class="login-link">
+          <p>Đã có tài khoản? <a href="/auth/login">Đăng nhập</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.configPath = "{{ url_for('static', filename='src/config/config.js') }}";
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      const field = urlParams.get('field');
+
+      if (error) {
+        const errorMessageElement = document.getElementById('errorMessage');
+        if (errorMessageElement) {
+          errorMessageElement.textContent = decodeURIComponent(error);
+          errorMessageElement.style.display = 'block';
+          
+          if (field) {
+            const fieldElement = document.getElementById(field);
+            if (fieldElement) {
+              fieldElement.focus();
+              const errorSpan = document.getElementById(`${field}-error`);
+              if (errorSpan) {
+                errorSpan.textContent = decodeURIComponent(error);
+              }
+            }
+          }
+        }
+      }
+
+    });
+  </script>
+  <script src="/utils/temporary-notification.js"></script>
+  <script src="/auth/signup/signup.js" type="module"></script>
+</body>
+</html>
