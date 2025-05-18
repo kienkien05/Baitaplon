@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error {{ error_code }}</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+        .error-container {
+            margin-top: 100px;
+        }
+        .error-code {
+            font-size: 72px;
+            color: #e74c3c;
+        }
+        .error-message {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .back-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">{{ error_code }}</div>
+        <div class="error-message">{{ message }}</div>
+        <a href="{{ url_for('login_page') }}" class="back-link">Return to Login</a>
+    </div>
+</body>
+</html>

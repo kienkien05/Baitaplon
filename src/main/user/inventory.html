@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="inventory.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="/notification/persistent-notification-dropdown.css">
+    <link rel="stylesheet" href="../../css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho Hàng Vô Tri</h1>
+            </div>
+            <div class="header-actions">
+                <div class="header-nav">
+                    <a href="/main/user/inventory" class="nav-link current" data-tooltip="Kho hàng"><i class="fas fa-boxes"></i></a>
+                    {% if is_admin %}
+                    <a href="/main/admin/management" class="nav-link" data-tooltip="Quản lý người dùng"><i class="fas fa-users"></i></a>
+                    {% endif %}
+                    <a href="/profile" class="nav-link" data-tooltip="Thông tin cá nhân"><i class="fas fa-user"></i></a>
+                    <div class="notification-dropdown">
+                        <button class="nav-link" id="notificationBtn" data-tooltip="Thông báo">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="notification-header">
+                                <h3>Thông báo</h3>
+                                <button id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                            </div>
+                            <div class="notification-list">
+                                <!-- Notifications will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="inventory-container">
+            <div class="inventory-controls">
+                <div class="inventory-search">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="productSearch" placeholder="Tìm kiếm sản phẩm...">
+                    </div>
+                    <div class="inventory-filters">
+                        <select class="filter-select" id="categoryFilter">
+                            <option value="">Tất cả danh mục</option>
+                        </select>
+                        <select class="filter-select" id="sortOrder">
+                            <option value="name">Sắp xếp theo tên</option>
+                            <option value="price">Sắp xếp theo giá</option>
+                            <option value="quantity">Sắp xếp theo số lượng</option>
+                            <option value="date">Mới nhất</option>
+                        </select>
+                        <select class="filter-select" id="stockFilter">
+                            <option value="all">Tất cả sản phẩm</option>
+                            <option value="in-stock">Còn hàng</option>
+                            <option value="low-stock">Sắp hết</option>
+                            <option value="out-stock">Hết hàng</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="addProductBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Thêm sản phẩm mới
+                </button>
+            </div>
+
+            <div class="inventory-grid" id="productList">
+            </div>
+            
+            <div class="pagination" id="pagination">
+            </div>
+
+            <!-- Add/Edit Product Modal -->
+            <div id="productModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Thêm sản phẩm mới</h3>
+                        <button type="button" class="close-btn" id="closeModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="productForm">
+                            <div class="form-group">
+                                <label for="name">Tên sản phẩm:</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Giá:</label>
+                                <input type="number" id="price" name="price" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Số lượng:</label>
+                                <input type="number" id="amount" name="quantity" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="source">Nguồn nhập:</label>
+                                <input type="text" id="source" name="source">
+                            </div>
+                            <div class="form-group category">
+                                <label for="category">Danh mục:</label>
+                                <input type="text" id="category" name="category">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Mô tả:</label>
+                                <textarea id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="error-message" id="formError"></div>
+                            <div class="modal-actions">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <button type="button" id="cancelBtn" class="btn btn-secondary">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="modalBackdrop" class="modal-backdrop" style="display: none;"></div>
+            
+            <!-- Delete Confirmation Modal -->
+            <div id="deleteConfirmModal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Xác nhận xóa</h3>
+                        <button type="button" class="close-btn" id="closeDeleteModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+                        <div class="modal-actions">
+                            <button id="confirmDelete" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                            <button id="cancelDelete" class="btn btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Kho hàng vô tri</p>
+            <nav class="footer-nav">
+                <a href="/about">Về chúng tôi</a>
+                <a href="/support">Hỗ trợ kỹ thuật</a>
+                <a href="/terms">Điều khoản sử dụng</a>
+                <a href="/privacy">Chính sách bảo mật</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop" style="display: none;"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="/notification/persistent-notification.js" defer></script>
+    <script src="inventory.js"></script>
+    
+    <!-- Initialize fuzzy search -->
+    <script>
+        window.initializeFuzzySearch = () => import('/js/fuzzy-search.js');
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93976ea03bdd4552',t:'MTc0NjE4ODAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+``` 
