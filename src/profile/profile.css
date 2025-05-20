@@ -1,0 +1,194 @@
+.profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+}
+
+
+.profile-stats {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    align-self: start;
+}
+
+.profile-stats h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.stats-info p {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stats-info p:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+/* Hide statistics for admin users */
+body[data-user-role="admin"] .profile-stats {
+    display: none;
+}
+
+.stats-info strong {
+    display: block;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.stats-info span {
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 500;
+}
+
+
+.profile-details {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-picture {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid var(--primary-color);
+}
+
+.personal-info {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.personal-info p {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: baseline;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Add more space for form fields */
+.personal-info input,
+.personal-info select {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Add spacing for labels */
+.personal-info label {
+    margin-bottom: 1rem;
+    display: block;
+    color: #555;
+    font-weight: 600;
+}
+
+.personal-info p:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.personal-info strong {
+    min-width: 150px;
+    color: #555;
+    font-weight: 600;
+}
+
+.personal-info span {
+    flex: 1;
+    color: #333;
+    padding: 0.5rem 0;
+}
+
+.account-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .profile-stats,
+    .profile-details {
+        background: #ffffff;
+    }
+
+    .profile-stats h3 {
+        color: #333333;
+    }
+
+    .stats-info strong {
+        color: #666666;
+    }
+
+    .stats-info span {
+        color: #333333;
+    }
+
+    .personal-info {
+        background: #f8f9fa;
+    }
+
+    .personal-info strong {
+        color: #555555;
+    }
+
+    .personal-info span {
+        color: #333333;
+    }
+
+    .personal-info p {
+        border-bottom-color: #eeeeee;
+    }
+
+    .stats-info p {
+        border-bottom-color: #eeeeee;
+    }
+
+    .account-actions {
+        border-top-color: #eeeeee;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-stats {
+        order: 2;
+    }
+
+    .profile-details {
+        order: 1;
+    }
+}
