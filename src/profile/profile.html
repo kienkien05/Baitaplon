@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/profile/profile.css">
+    <link rel="stylesheet" href="/notification/persistent-notification-dropdown.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho Hàng Vô Tri</h1>
+            </div>
+            <div class="header-actions">
+                <div class="header-nav">
+                    {% if not user.is_admin %}
+                    <a href="/main/user/inventory" class="nav-link" data-tooltip="Kho hàng"><i class="fas fa-boxes"></i></a>
+                    {% endif %}
+                    <a href="/dashboard" class="nav-link" data-tooltip="Thống kê"><i class="fas fa-chart-bar"></i></a>
+                    {% if user.is_admin %}
+                    <a href="/main/admin/management" class="nav-link" data-tooltip="Quản lý người dùng"><i class="fas fa-users"></i></a>
+                    {% endif %}
+                    <a href="/profile" class="nav-link current" data-tooltip="Thông tin cá nhân"><i class="fas fa-user"></i></a>
+                    <div class="notification-dropdown">
+                        <button class="nav-link" id="notificationBtn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="notification-header">
+                                <h3>Thông báo</h3>
+                                <button id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                            </div>
+                            <div class="notification-list">
+                                <!-- Notifications will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-layout">
+                <!-- Left Column - Statistics -->
+                <div class="profile-stats">
+                    <h3>Thống kê</h3>
+                    <div class="stats-info">
+                        <p>
+                            <strong>Tổng số đơn hàng:</strong>
+                            <span id="totalOrders">0</span>
+                        </p>
+                        <p>
+                            <strong>Sản phẩm yêu thích:</strong>
+                            <span id="favoriteProducts">None</span>
+                        </p>
+                        <p>
+                            <strong>Số đánh giá:</strong>
+                            <span id="reviewCount">0</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column - User Information -->
+                <div class="profile-details">
+                    <div class="personal-info">
+                        <p>
+                            <strong>Tên đăng nhập:</strong>
+                            <span id="username">{{ user.username }}</span>
+                        </p>
+                        <p>
+                            <strong>Email:</strong>
+                            <span id="email">{{ user.email }}</span>
+                        </p>
+                        <p>
+                            <strong>Họ và tên:</strong>
+                            <span id="name">{{ user.name if user.name else '---' }}</span>
+                        </p>
+                        <p>
+                            <strong>Ngày sinh:</strong>
+                            <span id="dateOfBirth">{{ user.date_of_birth if user.date_of_birth else '---' }}</span>
+                        </p>
+                        <p>
+                            <strong>Địa chỉ:</strong>
+                            <span id="address">{{ user.address if user.address else '---' }}</span>
+                        </p>
+                        <p>
+                            <strong>Số điện thoại:</strong>
+                            <span id="phone">{{ user.phone if user.phone else '---' }}</span>
+                        </p>
+                    </div>
+                    <div class="account-actions">
+                        <a href="/settings" class="btn btn-primary"><i class="fas fa-cog"></i> Chỉnh sửa thông tin</a>
+                        <a href="/auth/logout" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ get_footer() | safe }}
+
+    <script>
+    // Phone number input validation
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 10) value = value.slice(0, 10);
+        e.target.value = value;
+    });
+    </script>
+    <script type="module" src="/profile/profile.js"></script>
+    <script type="module" src="/notification/persistent-notification.js"></script>
+</body>
+</html>

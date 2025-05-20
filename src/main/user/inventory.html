@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="inventory.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="/notification/persistent-notification-dropdown.css">
+    <link rel="stylesheet" href="../../css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho Hàng Vô Tri</h1>
+            </div>
+            <div class="header-actions">
+                <div class="header-nav">
+                    <a href="/main/user/inventory" class="nav-link current" data-tooltip="Kho hàng"><i class="fas fa-boxes"></i></a>
+                    <a href="/dashboard" class="nav-link" data-tooltip="Thống kê"><i class="fas fa-chart-bar"></i></a>
+                    {% if is_admin %}
+                    <a href="/main/admin/management" class="nav-link" data-tooltip="Quản lý người dùng"><i class="fas fa-users"></i></a>
+                    {% endif %}
+                    <a href="/profile" class="nav-link" data-tooltip="Thông tin cá nhân"><i class="fas fa-user"></i></a>
+                    <div class="notification-dropdown">
+                        <button class="nav-link" id="notificationBtn" data-tooltip="Thông báo">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="notification-header">
+                                <h3>Thông báo</h3>
+                                <button id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                            </div>
+                            <div class="notification-list">
+                                <!-- Notifications will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="inventory-container">
+            <div class="inventory-controls">
+                <div class="inventory-search">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="productSearch" placeholder="Tìm kiếm sản phẩm...">
+                    </div>
+                    <div class="inventory-filters">
+                        <select class="filter-select" id="categoryFilter">
+                            <option value="">Tất cả danh mục</option>
+                        </select>
+                        <select class="filter-select" id="sortOrder">
+                            <option value="name">Sắp xếp theo tên</option>
+                            <option value="price">Sắp xếp theo giá</option>
+                            <option value="quantity">Sắp xếp theo số lượng</option>
+                            <option value="date">Mới nhất</option>
+                        </select>
+                        <select class="filter-select" id="stockFilter">
+                            <option value="all">Tất cả sản phẩm</option>
+                            <option value="in-stock">Còn hàng</option>
+                            <option value="low-stock">Sắp hết</option>
+                            <option value="out-stock">Hết hàng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="addProductBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm sản phẩm mới
+                    </button>
+                    <button id="exportBtn" class="btn btn-secondary">
+                        <i class="fas fa-file-export"></i> Xuất danh sách
+                    </button>
+                </div>
+            </div>
+
+            <div class="inventory-grid" id="productList">
+            </div>
+            
+            <div class="pagination" id="pagination">
+            </div>
+
+            <!-- Add/Edit Product Modal -->
+            <div id="productModal" class="modal" tabindex="-1" role="dialog" style="display: none">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Thêm sản phẩm mới</h3>
+                        <button type="button" class="close-btn" id="closeModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="productForm">
+                            <div class="form-group">
+                                <label for="name">Tên sản phẩm</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Giá (VNĐ)</label>
+                                <input type="number" id="price" name="price" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Số lượng</label>
+                                <input type="number" id="quantity" name="quantity" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="source">Nguồn hàng</label>
+                                <input type="text" id="source" name="source">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Danh mục</label>
+                                <input type="text" id="category" name="category">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Mô tả</label>
+                                <textarea id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div id="formError" class="error-message"></div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <button type="button" id="cancelBtn" class="btn btn-secondary">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div id="deleteConfirmModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Xác nhận xóa</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+                        <div class="modal-actions">
+                            <button id="confirmDelete" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                            <button id="cancelDelete" class="btn btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Modal -->
+            <div id="exportModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Xuất hàng</h3>
+                        <button type="button" class="close-btn" id="closeExportModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="export-product-list">
+                            <div class="export-search">
+                                <input type="text" id="exportSearch" placeholder="Tìm kiếm sản phẩm...">
+                            </div>
+                            <div class="export-products">
+                                <!-- Products will be listed here -->
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="confirmExport" class="btn btn-primary">
+                                <i class="fas fa-file-export"></i> Xuất hàng
+                            </button>
+                            <button type="button" id="cancelExport" class="btn btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Backdrop -->
+            <div id="modalBackdrop" class="modal-backdrop" style="display: none"></div>
+        </div>
+    </main>
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop" style="display: none;"></div>
+
+    <!-- Scripts -->
+    <script src="/notification/persistent-notification.js" defer></script>
+    <script src="inventory.js" defer></script>
+    
+    <!-- Initialize fuzzy search -->
+    <script>
+        window.initializeFuzzySearch = () => import('/js/fuzzy-search.js');
+    </script>
+
+    {{ get_footer() | safe }}
+</body>
+</html>

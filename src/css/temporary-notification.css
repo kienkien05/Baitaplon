@@ -1,0 +1,33 @@
+.temporary-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  font-size: 1.1em;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: slideIn 0.5s ease;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.temporary-notification.success {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.temporary-notification.error {
+  background: linear-gradient(135deg, #f44336, #e53935);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
