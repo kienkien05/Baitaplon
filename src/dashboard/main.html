@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Kho hàng vô tri</title>
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../dashboard/main.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="/notification/persistent-notification-dropdown.css">
+    <link rel="stylesheet" href="../css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="modalBackdrop" class="modal-backdrop"></div>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho Hàng Vô Tri</h1>
+            </div>
+            <div class="header-actions">
+                <div class="header-nav">
+                    <a href="/main/user/inventory" class="nav-link" data-tooltip="Kho hàng"><i class="fas fa-boxes"></i></a>
+                    <a href="/dashboard" class="nav-link current" data-tooltip="Thống kê"><i class="fas fa-chart-bar"></i></a>
+                    {% if is_admin %}
+                    <a href="/main/admin/management" class="nav-link" data-tooltip="Quản lý người dùng"><i class="fas fa-users"></i></a>
+                    {% endif %}
+                    <a href="/profile" class="nav-link" data-tooltip="Thông tin cá nhân"><i class="fas fa-user"></i></a>
+                    <div class="notification-dropdown">
+                    <button class="nav-link" id="notificationBtn" data-tooltip="Thông báo">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="notification-header">
+                            <h3>Thông báo</h3>
+                            <button id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                        </div>
+                        <div class="notification-list">
+                            <!-- Notifications will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+    <div class="dashboard-header">
+      <h2>Thống kê kho hàng: <span id="warehouseName">{{ warehouseName }}</span></h2>
+      <div class="date-filter">
+        <select id="timeRange">
+          <option value="7">7 ngày qua</option>
+          <option value="30">30 ngày qua</option>
+          <option value="90">90 ngày qua</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Top row -->
+      <div class="dashboard-card">
+        <h3>Trạng thái kho hàng</h3>
+        <div id="stockStatusChartContainer" style="position: relative; height: 300px;"></div>
+      </div>
+      
+      <div class="dashboard-card">
+        <h3>Thống kê nhập xuất</h3>
+        <div class="chart-container" style="position: relative; height: 300px;">
+            <canvas id="importExportChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Statistics Summary Section -->
+      <div class="dashboard-card wide stats-summary">
+        <h3>Thống kê chi tiết</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <i class="fas fa-box"></i>
+            <div class="stat-content">
+              <h4>Tổng sản phẩm</h4>
+              <p id="totalProducts">0</p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-money-bill-wave"></i>
+            <div class="stat-content">
+              <h4>Tổng giá trị sản phẩm</h4>
+              <p id="totalValue">0 VNĐ</p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-warehouse"></i>
+            <div class="stat-content">
+              <h4>Số lượng tồn kho</h4>
+              <p id="currentStock">0</p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-chart-line"></i>
+            <div class="stat-content">
+              <h4>Doanh thu xuất hàng</h4>
+              <p id="totalRevenue">0 VNĐ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="modal-container" id="supportModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Hỗ trợ kỹ thuật</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-content">
+      <p>Liên hệ hỗ trợ:</p>
+      <ul>
+        <li>Email: ktruongtrung5@gmail.com</li>
+        <li>Hotline: 0395697068</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="modal-container" id="termsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Điều khoản sử dụng</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-content">
+      <h3>1. Điều khoản chung</h3>
+      <p>Nội dung điều khoản sử dụng...</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-container" id="privacyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Chính sách bảo mật</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-content">
+      <h3>1. Quy định bảo mật</h3>
+      <p>Nội dung chính sách bảo mật...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="/notification/persistent-notification.js" defer></script>
+<script src="../dashboard/dashboard.js" defer></script>
+
+<!-- Initialize fuzzy search -->
+<script>
+    window.initializeFuzzySearch = () => import('/js/fuzzy-search.js');
+</script>
+{{ get_footer() | safe }}
+</body>
+</html>

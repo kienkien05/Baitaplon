@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin</title>
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="management.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="/notification/persistent-notification-dropdown.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/notification/persistent-notification.js" type="module" defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-warehouse"></i>
+                <h1>Kho Hàng Vô Tri</h1>
+            </div>
+            <div class="header-actions">
+                <div class="header-nav">
+                    <a href="/main/admin/management" class="nav-link current" data-tooltip="Quản lý người dùng"><i class="fas fa-users"></i></a>
+                    <a href="/profile" class="nav-link" data-tooltip="Thông tin cá nhân"><i class="fas fa-user"></i></a>
+                    <div class="notification-dropdown">
+                        <button class="nav-link" id="notificationBtn" data-tooltip="Thông báo">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="notification-header">
+                                <h3>Thông báo</h3>
+                                <button id="markAllRead">Đánh dấu tất cả đã đọc</button>
+                            </div>
+                            <div class="notification-list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="management-container">
+            <div class="search-section">
+                <div class="search-group">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="userSearch" placeholder="Tìm kiếm người dùng...">
+                    </div>
+                    <button id="searchButton" class="btn-primary">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                </div>
+                <div class="action-group">
+                    <button id="sendNotificationBtn" class="btn-primary">
+                        <i class="fas fa-bell"></i> Gửi thông báo
+                    </button>
+                </div>
+            </div>
+
+            <div class="user-grid" id="userGrid">
+            </div>
+            <div id="deleteConfirmModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Xác nhận xóa</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+                        <div class="modal-actions">
+                            <button id="confirmDelete" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                            <button id="cancelDelete" class="btn btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Sửa thông tin người dùng</h3>
+                    <button type="button" class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Vai trò</label>
+                            <select id="role" name="role">
+                                <option value="user">Người dùng</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                         <div class="form-group">
+                            <label for="password">Mật khẩu mới</label>
+                            <input type="password" id="password" name="password" placeholder="Để trống nếu không đổi">
+                        </div>
+<div class="form-group" style="display: none;">
+    <label for="active">Active</label>
+    <input type="checkbox" id="active" name="active">
+</div>
+                        <div id="formError" class="error-message"></div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="managementSystem.hideModal()">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Send Notification Modal -->
+        <div id="sendNotificationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Gửi thông báo</h3>
+                    <button type="button" class="close-btn" id="closeNotificationModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="notificationForm">
+                        <div class="form-group">
+                            <label for="notificationTitle">Tiêu đề</label>
+                            <input type="text" id="notificationTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notificationMessage">Nội dung</label>
+                            <textarea id="notificationMessage" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="notificationRecipient">Người nhận</label>
+                            <select id="notificationRecipient">
+                                <option value="all">Tất cả người dùng</option>
+                                <option value="select">Chọn người dùng</option>
+                            </select>
+                        </div>
+                        <div class="user-select-group" style="display: none;">
+                            <div id="userSelectList"></div>
+                        </div>
+                        <div id="notificationError" class="error-message"></div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Gửi thông báo</button>
+                            <button type="button" id="cancelNotificationBtn" class="btn btn-secondary">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ get_footer() | safe }}
+
+    <script src="management.js"></script>
+</body>
+</html>

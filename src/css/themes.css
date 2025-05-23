@@ -1,0 +1,30 @@
+:root {
+  --primary-color: #007bff;
+  --text-color: #333;
+  --bg-color: #ffffff;
+  --card-bg: #f8f9fa;
+}
+
+[data-theme="dark"] {
+  --primary-color: #0d6efd;
+  --text-color: #e9ecef;
+  --bg-color: #212529;
+  --card-bg: #343a40;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--card-bg);
+}
+
+.theme-toggle {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0.5rem;
+}
