@@ -1198,6 +1198,14 @@ def get_profile():
         print(f"Error in get_profile: {str(e)}")
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
+@app.route('/auth/signup', methods=['GET'])
+def signup_page():
+    if 'user_id' in session:
+        if session.get('is_admin'):
+            return redirect(url_for('admin_management'))
+        return redirect(url_for('inventory_page'))
+    return render_template('auth/signup/signup.html')
+
 if __name__ == '__main__':
     # Add validation endpoints
     @app.route('/api/check-username', methods=['POST'])
