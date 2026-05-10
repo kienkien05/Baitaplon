@@ -3,7 +3,7 @@
 
 **Nhóm:** ML End Term  
 **Ngày:** 10/05/2026  
-**Track đề xuất:** Fraud & Anomaly Detection (A)  
+**Track lựa chọn:** Super-Model tích hợp cả 3 Track: A (Fraud) + B (NBFO) + C (Segmentation)
 
 ---
 
@@ -14,18 +14,32 @@
 #### Giới thiệu bài toán
 Dự án xây dựng mô hình học máy trên bộ dữ liệu 360° của khách hàng ngân hàng, bao gồm: nhân khẩu học, hành vi số (digital footprint), và sở hữu sản phẩm tài chính. Mục tiêu là xây dựng các mô hình giúp tăng cường bảo mật và thúc đẩy tăng trưởng cá nhân hóa.
 
-#### Track nhóm chọn: **A - Fraud & Anomaly Detection**
-Nhóm đề xuất chọn Track A với các lý do sau:
-- Dữ liệu có yếu tố thời gian phong phú (Activity logs, Transaction timestamps) → phù hợp xây dựng behavioral baseline
-- Phát hiện bất thường dựa trên temporal pattern là hướng tiếp cận mạnh với dữ liệu này
-- Có thể xác định các rủi ro: account takeover, unauthorized transfer, money laundering patterns
-- Dữ liệu transaction có các category rủi ro cao (Outside_bank transfer, night-time activity)
+#### Track nhóm chọn: **Super-Model — Tích hợp cả 3 Track**
+Nhóm quyết định xây dựng "Super-Model" bao phủ toàn bộ 3 track để tối đa hóa điểm số và giá trị business:
 
-#### Ý nghĩa Business
-- **Giảm rủi ro giao dịch:** Phát hiện sớm các giao dịch bất thường, ngăn chặn tổn thất tài chính
-- **Bảo vệ khách hàng:** Xác định account takeover qua phân tích sai lệch hành vi
-- **Tuân thủ AML:** Phát hiện patterns của money laundering (placement, layering, integration)
-- **Giảm false positive:** Xây dựng behavioral baseline chính xác cho từng khách hàng
+**Track A — Fraud & Anomaly Detection:**
+- Phát hiện bất thường dựa trên temporal pattern và behavioral baseline
+- Xác định rủi ro: account takeover, unauthorized transfer, money laundering (placement, layering, integration)
+- Dữ liệu transaction có category rủi ro cao (Outside_bank transfer, night-time activity: 8.6% giao dịch)
+- **Deliverable đặc biệt:** xAI Engine — giải thích lý do flag anomaly bằng ngôn ngữ tự nhiên
+
+**Track B — Next Best Financial Offer (NBFO):**
+- Dự đoán xác suất khách hàng adopt sản phẩm tài chính mới trong kỳ tiếp theo
+- Tận dụng historical trends từ Deposit, Lending, Card để xác định cross-sell opportunities
+- Tín hiệu từ shifting expenditure patterns và account balance fluctuations
+- **Business value:** Tăng cross-selling, tối ưu targeted marketing
+
+**Track C — Persona-Based Digital Personalization:**
+- Phân cụm khách hàng dựa trên behavioral patterns thay vì demographics truyền thống
+- Tích hợp engagement metrics, temporal usage, transaction volume, category diversity
+- Xác định customer archetypes phản ánh thói quen digital banking hiện đại
+- **Business value:** Cá nhân hóa trải nghiệm, tối ưu retention và app interface
+
+#### Ý nghĩa Business (Tổng hợp 3 Track)
+- **Giảm rủi ro (Track A):** Phát hiện sớm giao dịch bất thường, ngăn chặn tổn thất tài chính, tuân thủ AML
+- **Tăng doanh thu (Track B):** Cross-selling chính xác, data-driven leads cho relationship managers
+- **Cá nhân hóa (Track C):** Customer lifetime value insights, personalized engagement và retention strategies
+- **Kiến trúc tích hợp:** Shared feature pipeline phục vụ cả 3 track → tiết kiệm chi phí vận hành
 
 ### 1.2 Dataset Overview
 
