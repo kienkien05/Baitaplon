@@ -1,6 +1,5 @@
 # BÁO CÁO EDA TUẦN 1
-## Phân Tích Dữ Liệu Khách Hàng Ngân Hàng 360°
----
+## Phân Tích Dữ Liệu Khách Hàng Ngân Hàng
 
 ## 1. Introduction
 
