@@ -1,6 +1,16 @@
 # BÁO CÁO EDA TUẦN 1
 ## Phân Tích Dữ Liệu Khách Hàng Ngân Hàng
 
+## 0. Members
+
+A47823 Nguyễn Danh Bảo – Nhóm trưởng
+A48037 Nguyễn Thuần Phương – Làm slide
+Đỗ Hoàng Gia Bảo – Làm slide – Vắng mặt
+Trần Đoàn Phúc Khang – EDA – Vắng mặt
+A48224 Nguyễn Long Vũ – EDA
+A48969 Nguyễn Hải Anh – Model & Opti
+A48282 Trương Trung Kiên – Model & Opti
+
 ## 1. Introduction
 
 ### 1.1 Project Overview
