@@ -409,37 +409,6 @@ Các features có tiềm năng xây dựng baseline cho mỗi khách hàng:
 
 ---
 
-## 10. Next Steps (Week 2 Plan)
-
-### 10.1 Preprocessing
-- [ ] Parse toàn bộ date columns về datetime format
-- [ ] Merge các bảng theo CUSTOMER_NUMBER + MONTH (cho monthly tables)
-- [ ] Xử lý missing IB_REGISTER_DATE: tạo flag `has_ebanking`
-- [ ] Filter transaction data đến 09/2019 để đồng bộ với các bảng khác
-- [ ] Xử lý outliers: capping vs flagging (với fraud track, giữ lại outliers làm feature)
-
-### 10.2 Feature Engineering
-- [ ] Build behavioral aggregation features từ Transaction và Activity
-- [ ] Build temporal features: hour patterns, day-of-week patterns
-- [ ] Build financial features: balance trends, product holdings
-- [ ] Create anomaly candidate labels (heuristic-based)
-- [ ] Feature selection bằng correlation analysis và mutual information
-
-### 10.3 Baseline Models (Tối thiểu 3 models)
-| Model | Mục đích | Ưu điểm |
-|-------|----------|---------|
-| **Isolation Forest** | Anomaly detection baseline | Không cần label, interpretable |
-| **AutoEncoder** | Deep anomaly detection | Học được non-linear patterns |
-| **XGBoost/LightGBM** | Supervised (với pseudo-labels) | Feature importance, strong baseline |
-| **LOF (Local Outlier Factor)** | Density-based anomaly | Phát hiện local outliers |
-
-### 10.4 Evaluation Strategy
-- Với unsupervised: phân tích top anomaly scores, kiểm tra tính hợp lý
-- Domain expert validation: xác nhận với business rules
-- Cross-validation temporal: train trên tháng đầu, test trên tháng sau
-
----
-
 ## Appendix: Visualization Index
 
 | Figure | File | Description |
