@@ -1,10 +1,5 @@
 # BÁO CÁO EDA TUẦN 1
 ## Phân Tích Dữ Liệu Khách Hàng Ngân Hàng 360°
-
-**Nhóm:** ML End Term  
-**Ngày:** 10/05/2026  
-**Track lựa chọn:** Super-Model tích hợp cả 3 Track: A (Fraud) + B (NBFO) + C (Segmentation)
-
 ---
 
 ## 1. Introduction
